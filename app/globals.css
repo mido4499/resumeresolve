@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --metal:      #0F1417;  /* dark — backgrounds */
+  --charcoal:       #232B30;  /* dark — backgrounds */
+  --slate:       #4B565C;  /* dark-light — borders, dividers, secondary text */
+  --steel:      #8C979C;  /* dark-light — borders, dividers, secondary text */
+  --chrome:       #CBD2D5;  /* light — cards, secondary backgrounds, surface color */
+  --platinum:      #F2F4F5;  /* light — cards, secondary backgrounds, surface color */
+  --oxide:      #3F7CAC;  /* accent - primary buttons, links, active states */
+  --rust:      #C7511F;  /* warnings or errors */
+
+  /* The app is always dark, so these don't depend on the system color scheme */
+  --background: var(--charcoal);
+  --foreground: var(--platinum);
 }
 
 @theme inline {
@@ -12,15 +22,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--oxide) 45%, transparent);
+  color: var(--platinum);
 }
