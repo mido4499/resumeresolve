@@ -69,14 +69,10 @@ export default function VerifyEmail({ onVerified, notice }: VerifyEmailProps) {
 
     return (
         <div className="flex flex-col items-center gap-6 py-2 text-center">
-            <div className="relative">
-                <span aria-hidden className="absolute inset-0 animate-ping rounded-2xl bg-(--oxide)/25 motion-reduce:animate-none" />
-                <IconTile><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></IconTile>
-            </div>
+            <IconTile><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></IconTile>
 
             <div className="flex flex-col gap-3">
-                <span className="text-xs font-semibold tracking-[0.2em] text-(--oxide)">ONE MORE THING</span>
-                <h2 className="text-3xl font-semibold text-(--platinum)">Check your inbox</h2>
+                <h2 className="text-2xl font-semibold text-(--platinum)">Check your inbox</h2>
                 <p className="text-lg leading-relaxed text-(--chrome)">
                     We sent a verification link to{" "}
                     {email ? <span className="font-semibold text-(--platinum)">{email}</span> : "your email"}.

@@ -4,7 +4,6 @@ import { isEducationComplete } from "@/lib/education";
 import Button from "../Button";
 import EducationFields, { EducationWarning, EMPTY_EDUCATION } from "../EducationFields";
 import { Field, formButtonClass, inputClass } from "../FormFields";
-import { IconTile } from "./CardFace";
 
 // Optional step after verification: phone number and education, both shown on the resume
 export default function CompleteAccount({ onDone }: { onDone: () => void }) {
@@ -49,16 +48,12 @@ export default function CompleteAccount({ onDone }: { onDone: () => void }) {
 
     return (
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-            <div className="flex items-start gap-4 pr-8">
-                <IconTile><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></IconTile>
-                <div className="flex flex-col gap-1">
-                    <span className="text-xs font-semibold tracking-[0.2em] text-(--oxide)">EMAIL VERIFIED</span>
-                    <h2 className="text-3xl font-semibold text-(--platinum)">Complete your account</h2>
-                </div>
+            <div className="flex flex-col gap-2 pr-8">
+                <h2 className="text-2xl font-semibold text-(--platinum)">Complete your account</h2>
+                <p className="text-(--chrome)">
+                    Your email is verified. Everything below is optional and appears on your resume. You can change it later from Account.
+                </p>
             </div>
-            <p className="-mt-2 text-(--chrome)">
-                Everything here is optional and appears on your resume. You can change it later from Account.
-            </p>
 
             <Field label="Phone number">
                 <input className={inputClass} type="tel" value={phone} onChange={e => setPhone(e.target.value)} autoComplete="tel" placeholder="(480) 555-0123" />

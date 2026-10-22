@@ -27,9 +27,10 @@ export function parsePhone(value: unknown): string | null {
     return phone;
 }
 
-// Basic shape check; the verification email is the real test
+// Basic shape check; the verification email is the real test.
+// Lowercased so the same address can't make two accounts or fail to sign in because of its capitals.
 export function parseEmail(value: unknown): string {
-    const email = optionalText(value, "Email", 254);
+    const email = optionalText(value, "Email", 254)?.toLowerCase();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new InvalidInput("Enter a valid email address.");
     return email;
 }

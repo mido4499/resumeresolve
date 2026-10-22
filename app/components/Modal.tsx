@@ -36,14 +36,14 @@ export default function Modal({isOpen, onClose, children, className}: modalProps
     return (
         // Backdrop div
         <div
-            className="fixed inset-0 flex z-50 items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+            className="fixed inset-0 flex z-50 items-center justify-center bg-black/70 px-4"
             onClick={onClose}
             role="dialog"
             aria-modal="true"
         >
             {/**Actual modal */}
             <div
-                className={twMerge("w-full max-w-md rounded-3xl border border-(--slate)/40 bg-(--metal) p-6 shadow-2xl sm:p-8", className)}
+                className={twMerge("w-full max-w-md rounded-2xl border border-(--slate)/60 bg-(--metal) p-6 sm:p-8", className)}
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}

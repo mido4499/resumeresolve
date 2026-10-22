@@ -9,14 +9,16 @@ type AuthFormProps = {
     onAuthenticated: () => void;
     onSwitch: () => void;
     onBack: () => void;
+    onForgotPassword: () => void;
     notice?: { tone: "success" | "error", text: string };
 };
 
-export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, notice }: AuthFormProps) {
+export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, onForgotPassword, notice }: AuthFormProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const isSignUp = mode === "signUp";
@@ -30,7 +32,7 @@ export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, noti
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password, acceptedTerms }),
             });
             if (!res.ok) {
                 const data = await res.json();
@@ -42,7 +44,9 @@ export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, noti
 
         const result = await signIn("credentials", { email, password, redirect: false });
         if (result?.error) {
-            setError("Invalid email or password.");
+            setError(result.code === "rate_limited"
+                ? "Too many sign-in attempts. Wait a few minutes and try again, or reset your password."
+                : "Invalid email or password.");
             setLoading(false);
             return;
         }
@@ -51,12 +55,7 @@ export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, noti
 
     return (
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-2 pr-8">
-                <span className="text-xs font-semibold tracking-[0.2em] text-(--oxide)">
-                    {isSignUp ? "CREATE YOUR ACCOUNT" : "WELCOME BACK"}
-                </span>
-                <h2 className="text-3xl font-semibold text-(--platinum)">{isSignUp ? "Sign up" : "Sign in"}</h2>
-            </div>
+            <h2 className="pr-8 text-2xl font-semibold text-(--platinum)">{isSignUp ? "Create your account" : "Sign in"}</h2>
 
             {notice && <Notice tone={notice.tone}>{notice.text}</Notice>}
 
@@ -73,7 +72,14 @@ export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, noti
                 <input className={inputClass} type="email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" required autoFocus={!isSignUp} />
             </Field>
 
-            <Field label="Password" hint={isSignUp && "At least 8 characters."}>
+            <Field
+                label="Password"
+                hint={isSignUp
+                    ? "At least 8 characters."
+                    : <span className="block text-right">
+                        <button type="button" onClick={onForgotPassword} className="text-sm text-(--oxide) hover:underline">Forgot password?</button>
+                    </span>}
+            >
                 <div className="relative">
                     <input
                         className={`${inputClass} pr-12`}
@@ -98,6 +104,24 @@ export default function AuthForm({ mode, onAuthenticated, onSwitch, onBack, noti
                     </button>
                 </div>
             </Field>
+
+            {isSignUp && (
+                <label className="flex items-start gap-3 text-sm text-(--chrome)">
+                    <input
+                        type="checkbox"
+                        checked={acceptedTerms}
+                        onChange={e => setAcceptedTerms(e.target.checked)}
+                        required
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-(--oxide)"
+                    />
+                    <span>
+                        I agree to the{" "}
+                        <a href="/terms" target="_blank" rel="noopener" className="text-(--oxide) hover:underline">Terms of Service</a>{" "}
+                        and{" "}
+                        <a href="/privacy" target="_blank" rel="noopener" className="text-(--oxide) hover:underline">Privacy Policy</a>.
+                    </span>
+                </label>
+            )}
 
             {error && <p className="text-sm text-(--rust)">{error}</p>}
 

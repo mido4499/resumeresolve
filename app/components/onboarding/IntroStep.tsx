@@ -12,7 +12,7 @@ const STEPS = [
         title: "Capture every win as it happens",
         body: "Whenever you achieve something new, no matter how small, add it to the experience it belongs to. Keep doing it over months and years. Your diary is saved securely on our servers.",
         note: "An experience can be a job or a project.",
-        icon: <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5" />,
+        icon: <><circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" /></>,
     },
     {
         title: "Turn your diary into a resume",
@@ -32,31 +32,26 @@ type IntroStepProps = {
 export default function IntroStep({ step, onNext, onBack, onSignUp, onSignIn }: IntroStepProps) {
     const { title, body, note, icon } = STEPS[step];
     const isLast = step === STEPS.length - 1;
-    const number = String(step + 1).padStart(2, "0");
 
     return (
         <div className="flex flex-col gap-6">
-            <span aria-hidden className="pointer-events-none absolute top-7 right-0 text-[8.5rem] leading-none font-black text-(--charcoal) select-none">
-                {number}
-            </span>
-
-            <div className="relative flex items-center gap-3 pr-8">
+            <div className="flex items-center gap-3 pr-8">
                 <div className="flex flex-1 gap-1.5">
                     {STEPS.map((_, i) => (
                         <span key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= step ? "bg-(--oxide)" : "bg-(--charcoal)"}`} />
                     ))}
                 </div>
-                <span className="text-xs font-semibold tracking-[0.2em] text-(--steel)">
-                    STEP {number} / {String(STEPS.length).padStart(2, "0")}
+                <span className="text-sm text-(--steel)">
+                    Step {step + 1} of {STEPS.length}
                 </span>
             </div>
 
-            <div className="relative flex flex-col gap-5 pt-4">
+            <div className="flex flex-col gap-4 pt-2">
                 <IconTile>{icon}</IconTile>
-                <h2 className="text-3xl font-semibold text-(--platinum)">{title}</h2>
+                <h2 className="text-2xl font-semibold text-(--platinum)">{title}</h2>
                 <p className="text-lg leading-relaxed text-(--chrome)">{body}</p>
                 {note && (
-                    <p className="rounded-xl border border-(--oxide)/40 bg-(--oxide)/10 px-4 py-3 text-(--chrome)">
+                    <p className="border-l-2 border-(--oxide) pl-4 text-(--chrome)">
                         <span className="font-semibold text-(--platinum)">Good to know: </span>{note}
                     </p>
                 )}

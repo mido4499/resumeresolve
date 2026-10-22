@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { RETURNING_USER_COOKIE } from "@/lib/returningUser";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Landing from "./components/Landing";
@@ -8,7 +10,7 @@ import type { Face, OnboardingNotice } from "./components/onboarding/OnboardingM
 // new visitor -> intro steps, unverified -> verify email, verified -> complete account, done -> dashboard.
 // ?verify= is set by the email verification link (see app/api/auth/verify).
 export default async function Home({ searchParams }: PageProps<"/">) {
-    const { verify } = await searchParams;
+    const { verify, reset } = await searchParams;
     const linkFailed = verify === "expired" || verify === "invalid";
 
     const session = await auth();
@@ -38,7 +40,18 @@ export default async function Home({ searchParams }: PageProps<"/">) {
     } else if (linkFailed) {
         startFace = "signIn";
         notice = { tone: "error", text: "That verification link is invalid or has expired. Sign in to get a new one." };
+    } else if (reset === "success") {
+        startFace = "signIn";
+        notice = { tone: "success", text: "Your password has been reset. Sign in with your new password." };
+    } else if (reset === "invalid") {
+        startFace = "forgotPassword";
+        notice = { tone: "error", text: "That reset link is invalid or has expired. Enter your email to get a new one." };
     }
 
-    return <Landing startFace={startFace} notice={notice} />;
+    // Returning visitors on this device skip the intro; anything that needs their attention
+    // (a verification result, a pending verify or complete-account step) still opens it
+    const returning = (await cookies()).has(RETURNING_USER_COOKIE);
+    const autoOpen = !returning || startFace !== "step1";
+
+    return <Landing startFace={startFace} notice={notice} autoOpen={autoOpen} />;
 }

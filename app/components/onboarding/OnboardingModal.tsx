@@ -2,14 +2,16 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Modal from "../Modal";
+import { rememberThisDevice } from "@/lib/returningUser";
 import AuthForm from "./AuthForm";
 import CardFace from "./CardFace";
 import CompleteAccount from "./CompleteAccount";
 import FlipCard, { FLIP_MS, isBackVisible } from "./FlipCard";
 import IntroStep from "./IntroStep";
 import VerifyEmail from "./VerifyEmail";
+import ForgotPassword from "./ForgotPassword";
 
-export type Face = "step1" | "step2" | "step3" | "signUp" | "signIn" | "verify" | "complete";
+export type Face = "step1" | "step2" | "step3" | "signUp" | "signIn" | "forgotPassword" | "verify" | "complete";
 export type OnboardingNotice = { tone: "success" | "error", text: string };
 
 type OnboardingModalProps = {
@@ -21,7 +23,7 @@ type OnboardingModalProps = {
 
 export default function OnboardingModal({ isOpen, onClose, startFace, notice }: OnboardingModalProps) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} className="max-w-xl rounded-3xl border-0 bg-transparent p-0 shadow-none sm:p-0">
+        <Modal isOpen={isOpen} onClose={onClose} className="max-w-xl rounded-2xl border-0 bg-transparent p-0 sm:p-0">
             {/* Mounted only while open, so every reopen starts fresh */}
             <OnboardingFlow startFace={startFace} notice={notice} onClose={onClose} />
         </Modal>
@@ -53,6 +55,7 @@ function OnboardingFlow({ startFace, notice, onClose }: Omit<OnboardingModalProp
 
     // After signing in or up, continue from wherever this account is in onboarding
     async function continueSignedIn() {
+        rememberThisDevice();
         const res = await fetch("/api/account/status");
         const status = await res.json();
         if (!status.verified) goTo("verify");
@@ -91,8 +94,12 @@ function OnboardingFlow({ startFace, notice, onClose }: Omit<OnboardingModalProp
                         onAuthenticated={continueSignedIn}
                         onSwitch={() => goTo(face === "signUp" ? "signIn" : "signUp")}
                         onBack={() => goTo("step1", -1)}
+                        onForgotPassword={() => goTo("forgotPassword")}
                     />
                 );
+                break;
+            case "forgotPassword":
+                content = <ForgotPassword notice={startNotice} onBack={() => goTo("signIn", -1)} />;
                 break;
             case "verify":
                 content = <VerifyEmail notice={startNotice} onVerified={() => goTo("complete")} />;

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { rememberThisDevice } from "@/lib/returningUser";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 
@@ -19,6 +20,9 @@ export default function DashboardSidebar(){
     const pathname = usePathname();
     const mounted = useSyncExternalStore(subscribe, ()=>true, ()=>false);
     const [menuOpen, setMenuOpen] = useState(false);
+
+    // Only signed-in users see the dashboard, so this browser belongs to a returning user
+    useEffect(() => { rememberThisDevice(); }, []);
 
     return (
         <>

@@ -7,6 +7,7 @@ import { templates } from "@/lib/templates";
 import { fitToBudget } from "@/lib/templates/helpers";
 import { isEducationComplete } from "@/lib/education";
 import type { ResumeData } from "@/lib/templates/types";
+import { hit, limits, refund, waitTime } from "@/lib/rateLimit";
 
 // Claude can take a while to write a resume from a long diary
 export const maxDuration = 60;
@@ -59,12 +60,20 @@ export async function POST(request: Request) {
         return NextResponse.json({error: "Add at least one experience before generating a resume."}, {status: 400});
     }
 
+    // Counted before calling Claude so parallel requests can't slip past the cap; given back if generation fails
+    const limit = limits.generationsPerUser(user.id);
+    const usage = await hit(limit);
+    if (!usage.allowed) {
+        return NextResponse.json({error: `You've used all ${limit.max} resumes for today. You can generate more in ${waitTime(usage.resetAt)}.`}, {status: 429});
+    }
+
     let resume;
     try {
         resume = await generate(jobDescription, user.experiences, template);
     } catch (error) {
         console.error("Resume generation failed:", error);
-        return NextResponse.json({error: "Couldn't generate the resume. Please try again."}, {status: 502});
+        await refund(limit);
+        return NextResponse.json({error: "Couldn't generate the resume. Please try again. This one didn't count toward your daily limit."}, {status: 502});
     }
 
     const data: ResumeData = {
@@ -84,6 +93,7 @@ export async function POST(request: Request) {
         headers: {
             "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "Content-Disposition": `attachment; filename="${fileName}"`,
+            "X-Generations-Left": String(limit.max - usage.count),
         },
     });
 }

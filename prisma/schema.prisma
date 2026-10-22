@@ -13,20 +13,25 @@ datasource db {
 }
 
 model User {
-  id                 String              @id @default(cuid())
-  name               String
-  email              String              @unique
-  password           String?
-  image              String?
-  phone              String?
+  id                  String               @id @default(cuid())
+  name                String
+  email               String               @unique
+  password            String?
+  image               String?
+  phone               String?
   // Set when the user clicks the link in the verification email
-  emailVerified      DateTime?
+  emailVerified       DateTime?
   // Set when the user finishes (or skips) the "complete account" step
-  onboardedAt        DateTime?
-  createdAt          DateTime            @default(now())
-  experiences        Experience[]
-  education          Education[]
-  verificationTokens VerificationToken[]
+  onboardedAt         DateTime?
+  // Set when the user agrees to the privacy policy at sign-up
+  privacyAcceptedAt   DateTime?
+  // Set when the user agrees to the terms of service at sign-up
+  termsAcceptedAt     DateTime?
+  createdAt           DateTime             @default(now())
+  experiences         Experience[]
+  education           Education[]
+  verificationTokens  VerificationToken[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 // Only a hash of the token is stored, so a database leak can't be used to verify emails
@@ -35,6 +40,20 @@ model VerificationToken {
   tokenHash String   @unique
   // The address being verified: the account's email at sign-up, or the new address when changing it
   email     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Links from "Forgot password" emails. Kept apart from VerificationToken so asking for a reset
+// doesn't cancel a pending email verification. Only a hash of the token is stored.
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
   userId    String
@@ -82,4 +101,14 @@ model Contribution {
   createdAt    DateTime   @default(now())
   experienceId String
   experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+}
+
+// Fixed-window counters for rate limits (sign-in attempts, sign-ups, reset emails, daily generations).
+// Keyed like "signin:ip:1.2.3.4" or "generate:<userId>"; expired rows are cleaned up as they're found.
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
 }

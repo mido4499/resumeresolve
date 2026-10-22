@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "crypto";
+import { siteUrl } from "@/lib/siteUrl";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationEmail } from "@/lib/email";
 
@@ -26,6 +27,6 @@ export async function sendVerification(user: { id: string, name: string, email: 
         }),
     ]);
 
-    const link = `${process.env.AUTH_URL ?? origin}/api/auth/verify?token=${token}`;
+    const link = `${siteUrl(origin)}/api/auth/verify?token=${token}`;
     await sendVerificationEmail(email, user.name, link);
 }

@@ -4,11 +4,16 @@ import Link from "next/link";
 import Button, { buttonBase, buttonSizes } from "./Button";
 import PageHeader, { cardClass } from "./PageHeader";
 import { Field, inputClass, Notice } from "./FormFields";
+import ExportForAI from "./ExportForAI";
+import type { DiaryExport } from "@/lib/diaryExport";
 
 type GenerateFormProps = {
     templates: { id: string, name: string }[];
-    hasExperiences: boolean;
+    diary: NonNullable<DiaryExport>;
     hasEducation: boolean;      // coursework only appears under a complete education entry
+    dailyLimit: number;
+    initialLeft: number;        // generations left in the current 24-hour window
+    resetsIn?: string;          // e.g. "5 hours"; only set once the window has started
 };
 
 // Saves the .docx returned by /api/generate, using the server's filename
@@ -23,12 +28,13 @@ async function saveFile(res: Response) {
     return fileName;
 }
 
-export default function GenerateForm({ templates, hasExperiences, hasEducation }: GenerateFormProps){
+export default function GenerateForm({ templates, diary, hasEducation, dailyLimit, initialLeft, resetsIn }: GenerateFormProps){
     const [jDescription, setJDescription] = useState("");
     const [templateId, setTemplateId] = useState(templates[0]?.id ?? "");
     const [coursework, setCoursework] = useState("");
     const [generating, setGenerating] = useState(false);
     const [message, setMessage] = useState<{ tone: "success" | "error", text: string }>();
+    const [left, setLeft] = useState(initialLeft);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -47,9 +53,12 @@ export default function GenerateForm({ templates, hasExperiences, hasEducation }
             });
             if (!res.ok) {
                 const data = await res.json().catch(() => ({}));
+                if (res.status === 429) setLeft(0);
                 setMessage({ tone: "error", text: data.error ?? "Couldn't generate the resume. Please try again." });
                 return;
             }
+            const remaining = Number(res.headers.get("X-Generations-Left"));
+            if (Number.isFinite(remaining)) setLeft(Math.max(0, remaining));
             const fileName = await saveFile(res);
             setMessage({ tone: "success", text: `Your resume is downloading as "${fileName}". Open it in Word or upload it to Google Docs to make final edits.` });
         } catch {
@@ -67,7 +76,7 @@ export default function GenerateForm({ templates, hasExperiences, hasEducation }
         />
     );
 
-    if (!hasExperiences) {
+    if (diary.experiences.length === 0) {
         return (
             <>
                 {header}
@@ -144,12 +153,24 @@ export default function GenerateForm({ templates, hasExperiences, hasEducation }
 
                 {message && <Notice tone={message.tone}>{message.text}</Notice>}
 
-                <p className="flex items-start gap-2 text-sm text-(--steel)">
-                    <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className="mt-0.5 h-4 w-4 shrink-0">
-                        <circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" />
-                    </svg>
-                    AI can make mistakes. Please review the resume before using it.
-                </p>
+                <ul className="flex flex-col gap-2 text-sm text-(--steel)">
+                    <li className="flex items-start gap-2">
+                        <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className="mt-0.5 h-4 w-4 shrink-0">
+                            <circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" />
+                        </svg>
+                        AI can make mistakes. Please review the resume before using it.
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-4 w-4 shrink-0">
+                            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+                        </svg>
+                        <span>
+                            {left > 0
+                                ? <>You can generate up to {dailyLimit} resumes every 24 hours. <span className="text-(--chrome)">{left} left.</span></>
+                                : <>You&apos;ve used all {dailyLimit} resumes for today.{resetsIn && ` You can generate more in ${resetsIn}.`} You can still copy your diary for another AI below.</>}
+                        </span>
+                    </li>
+                </ul>
 
                 <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end">
                     {generating && (
@@ -158,11 +179,13 @@ export default function GenerateForm({ templates, hasExperiences, hasEducation }
                             Writing your resume. This can take up to a minute.
                         </span>
                     )}
-                    <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={generating || !jDescription.trim() || !templateId}>
+                    <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={generating || left === 0 || !jDescription.trim() || !templateId}>
                         {generating ? "Generating..." : "Generate resume"}
                     </Button>
                 </div>
             </form>
+
+            <ExportForAI diary={diary} jobDescription={jDescription} />
         </>
     )
 }
