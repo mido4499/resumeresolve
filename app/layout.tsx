@@ -12,14 +12,15 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "Role Diary",
   description: "Keep a diary of your professional wins and turn it into a tailored resume.",
-  // Browsers that support SVG icons use rolediary-favicon.svg; the rest fall back to favicon.ico.
-  // favicon.ico and apple-touch-icon.png are rendered from the SVG.
+  // Browsers that support SVG icons use favicon.svg; the rest fall back to favicon.ico.
+  // favicon.ico and apple-touch-icon.png are rendered from favicon.svg, so regenerate them when it changes.
+  // Bump ?v= after changing an icon so browsers don't keep showing their cached copy.
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/rolediary-favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico?v=2", sizes: "any" },
+      { url: "/favicon.svg?v=2", type: "image/svg+xml" },
     ],
-    apple: "/apple-touch-icon.png",
+    apple: "/apple-touch-icon.png?v=2",
   },
 };
 
