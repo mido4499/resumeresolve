@@ -43,7 +43,7 @@ export default function Landing({ startFace, notice, autoOpen }: { startFace: Fa
             <OnboardingModal
                 isOpen={openAt !== null}
                 onClose={close}
-                startFace={openAt ?? "step1"}
+                startFace={openAt ?? "welcome"}
                 notice={currentNotice}
             />
         </main>

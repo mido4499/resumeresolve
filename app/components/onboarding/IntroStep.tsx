@@ -72,9 +72,7 @@ export default function IntroStep({ step, onNext, onBack, onSignUp, onSignIn }: 
                 </div>
             ) : (
                 <div className="mt-2 flex items-center justify-between">
-                    {step > 0
-                        ? <button type="button" onClick={onBack} className="text-(--steel) hover:text-(--platinum)">&larr; Back</button>
-                        : <span />}
+                    <button type="button" onClick={onBack} className="text-(--steel) hover:text-(--platinum)">&larr; Back</button>
                     <Button type="button" variant="primary" className={formButtonClass} onClick={onNext}>
                         Next &rarr;
                     </Button>

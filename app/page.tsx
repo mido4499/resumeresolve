@@ -7,7 +7,7 @@ import Landing from "./components/Landing";
 import type { Face, OnboardingNotice } from "./components/onboarding/OnboardingModal";
 
 // Picks which onboarding card to open based on where the visitor is:
-// new visitor -> intro steps, unverified -> verify email, verified -> complete account, done -> dashboard.
+// new visitor -> welcome card and intro steps, unverified -> verify email, verified -> complete account, done -> dashboard.
 // ?verify= is set by the email verification link (see app/api/auth/verify).
 export default async function Home({ searchParams }: PageProps<"/">) {
     const { verify, reset } = await searchParams;
@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         })
         : null;
 
-    let startFace: Face = "step1";
+    let startFace: Face = "welcome";
     let notice: OnboardingNotice | undefined;
 
     if (user) {
@@ -51,7 +51,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
     // Returning visitors on this device skip the intro; anything that needs their attention
     // (a verification result, a pending verify or complete-account step) still opens it
     const returning = (await cookies()).has(RETURNING_USER_COOKIE);
-    const autoOpen = !returning || startFace !== "step1";
+    const autoOpen = !returning || startFace !== "welcome";
 
     return <Landing startFace={startFace} notice={notice} autoOpen={autoOpen} />;
 }

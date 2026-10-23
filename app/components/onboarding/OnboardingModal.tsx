@@ -10,8 +10,9 @@ import FlipCard, { FLIP_MS, isBackVisible } from "./FlipCard";
 import IntroStep from "./IntroStep";
 import VerifyEmail from "./VerifyEmail";
 import ForgotPassword from "./ForgotPassword";
+import Welcome from "./Welcome";
 
-export type Face = "step1" | "step2" | "step3" | "signUp" | "signIn" | "forgotPassword" | "verify" | "complete";
+export type Face = "welcome" | "step1" | "step2" | "step3" | "signUp" | "signIn" | "forgotPassword" | "verify" | "complete";
 export type OnboardingNotice = { tone: "success" | "error", text: string };
 
 type OnboardingModalProps = {
@@ -69,6 +70,9 @@ function OnboardingFlow({ startFace, notice, onClose }: Omit<OnboardingModalProp
 
         let content: React.ReactNode;
         switch (face) {
+            case "welcome":
+                content = <Welcome onStart={() => goTo("step1")} onSignIn={() => goTo("signIn")} />;
+                break;
             case "step1":
             case "step2":
             case "step3": {
@@ -77,7 +81,7 @@ function OnboardingFlow({ startFace, notice, onClose }: Omit<OnboardingModalProp
                     <IntroStep
                         step={step}
                         onNext={() => goTo(`step${step + 2}` as Face)}
-                        onBack={() => goTo(`step${step}` as Face, -1)}
+                        onBack={() => goTo(step === 0 ? "welcome" : `step${step}` as Face, -1)}
                         onSignUp={() => goTo("signUp")}
                         onSignIn={() => goTo("signIn")}
                     />
