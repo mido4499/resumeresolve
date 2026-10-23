@@ -4,8 +4,8 @@ import { GENERATIONS_PER_DAY } from "@/lib/rateLimit";
 import LegalPage, { ContactEmail, Section, legalLink as link, legalList as list, legalStrong as strong } from "@/app/components/LegalPage";
 
 export const metadata: Metadata = {
-    title: "Terms of Service · Resume Resolve",
-    description: "The rules for using Resume Resolve, including AI-written resumes, your content, and our responsibilities.",
+    title: "Terms of Service · Role Diary",
+    description: "The rules for using Role Diary, including AI-written resumes, your content, and our responsibilities.",
 };
 
 const LAST_UPDATED = "October 21, 2026";
@@ -16,16 +16,16 @@ export default function TermsPage() {
             title="Terms of Service"
             lastUpdated={LAST_UPDATED}
             intro={<>
-                These terms are an agreement between you and Resume Resolve (&ldquo;we&rdquo;, &ldquo;us&rdquo;) about using
-                the Resume Resolve website. By creating an account or using the site, you agree to them. If you don&apos;t
-                agree, please don&apos;t use Resume Resolve. Our <Link href="/privacy" className={link}>Privacy Policy</Link> explains
+                These terms are an agreement between you and Role Diary (&ldquo;we&rdquo;, &ldquo;us&rdquo;) about using
+                the Role Diary website. By creating an account or using the site, you agree to them. If you don&apos;t
+                agree, please don&apos;t use Role Diary. Our <Link href="/privacy" className={link}>Privacy Policy</Link> explains
                 how we handle your information.
             </>}
         >
-            <Section title="Who can use Resume Resolve">
+            <Section title="Who can use Role Diary">
                 <p>
                     You must be at least 13 years old. If you&apos;re under 18, or under the age of majority where you live,
-                    you need permission from a parent or guardian to use Resume Resolve.
+                    you need permission from a parent or guardian to use Role Diary.
                 </p>
             </Section>
 
@@ -39,9 +39,9 @@ export default function TermsPage() {
 
             <Section title="The service">
                 <p>
-                    Resume Resolve is currently free. To keep it running, we limit how much it can be used, for example to{" "}
+                    Role Diary is currently free. To keep it running, we limit how much it can be used, for example to{" "}
                     {GENERATIONS_PER_DAY} resumes per account every 24 hours. We may change, add, or remove features and
-                    limits, or stop offering Resume Resolve altogether. If we ever introduce paid features, we&apos;ll tell you
+                    limits, or stop offering Role Diary altogether. If we ever introduce paid features, we&apos;ll tell you
                     first, and you won&apos;t be charged unless you choose to pay.
                 </p>
                 <p>
@@ -61,9 +61,9 @@ export default function TermsPage() {
 
             <Section title="Your content">
                 <p>
-                    You own what you put into Resume Resolve: your diary, profile, education, and the job descriptions you
+                    You own what you put into Role Diary: your diary, profile, education, and the job descriptions you
                     paste in. You give us permission to store, process, and transmit that content, including sending it to
-                    the service providers named in our Privacy Policy, only as needed to run Resume Resolve for you. This
+                    the service providers named in our Privacy Policy, only as needed to run Role Diary for you. This
                     permission ends when you delete the content or your account.
                 </p>
                 <p>
@@ -77,19 +77,19 @@ export default function TermsPage() {
             </Section>
 
             <Section title="Acceptable use">
-                <p>When using Resume Resolve, you agree not to:</p>
+                <p>When using Role Diary, you agree not to:</p>
                 <ul className={list}>
                     <li>break the law, or use the site to deceive or defraud anyone, including employers;</li>
                     <li>create accounts in bulk, use automated tools to access the site, or try to get around usage limits;</li>
                     <li>interfere with the site, overload it, probe it for security weaknesses, or access other users&apos; accounts or data;</li>
-                    <li>resell or offer Resume Resolve to others as your own service;</li>
+                    <li>resell or offer Role Diary to others as your own service;</li>
                     <li>submit content that is unlawful, harassing, or infringes someone else&apos;s rights.</li>
                 </ul>
             </Section>
 
             <Section title="Other services">
                 <p>
-                    Resume Resolve relies on third-party services, such as Anthropic for writing resumes. If you copy or
+                    Role Diary relies on third-party services, such as Anthropic for writing resumes. If you copy or
                     download your diary to use with another AI service or tool, that service&apos;s own terms and privacy
                     policy apply, and we&apos;re not responsible for it.
                 </p>
@@ -98,14 +98,14 @@ export default function TermsPage() {
             <Section title="Ending your account">
                 <p>
                     You can delete your account at any time from the Account page. We may suspend or close your account if
-                    you break these terms, if your use puts the site or other users at risk, or if we stop offering Resume
-                    Resolve. Where reasonable, we&apos;ll tell you first so you can export your data.
+                    you break these terms, if your use puts the site or other users at risk, or if we stop offering Role
+                    Diary. Where reasonable, we&apos;ll tell you first so you can export your data.
                 </p>
             </Section>
 
             <Section title="Disclaimers">
                 <p>
-                    Resume Resolve is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;. To the fullest extent the law
+                    Role Diary is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;. To the fullest extent the law
                     allows, we make no warranties of any kind, express or implied, including warranties of merchantability,
                     fitness for a particular purpose, accuracy, and non-infringement.
                 </p>
@@ -115,8 +115,8 @@ export default function TermsPage() {
                 <p>
                     To the fullest extent the law allows, we won&apos;t be liable for any indirect, incidental, special,
                     consequential, or punitive damages, or for lost opportunities, profits, or data, arising from your use
-                    of Resume Resolve or any resume it produces. Our total liability for any claim relating to Resume
-                    Resolve is limited to the greater of the amount you paid us in the 12 months before the claim, or US$50.
+                    of Role Diary or any resume it produces. Our total liability for any claim relating to Role
+                    Diary is limited to the greater of the amount you paid us in the 12 months before the claim, or US$50.
                 </p>
                 <p>
                     Some places don&apos;t allow these limits, so they may not all apply to you. Nothing in these terms limits
@@ -142,13 +142,13 @@ export default function TermsPage() {
             <Section title="Changes to these terms">
                 <p>
                     We may update these terms. When we do, we&apos;ll change the date at the top, and for significant changes
-                    we&apos;ll let you know by email or on the site before they take effect. If you keep using Resume Resolve
+                    we&apos;ll let you know by email or on the site before they take effect. If you keep using Role Diary
                     after the changes take effect, you accept the updated terms. If you don&apos;t accept them, you can delete
                     your account.
                 </p>
                 <p>
                     If any part of these terms can&apos;t be enforced, the rest still applies. These terms and our Privacy
-                    Policy are the whole agreement between you and us about Resume Resolve.
+                    Policy are the whole agreement between you and us about Role Diary.
                 </p>
             </Section>
 

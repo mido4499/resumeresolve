@@ -33,7 +33,7 @@ export default function LegalPage({ title, lastUpdated, intro, children }: Legal
         <main className="min-h-screen bg-(--metal) px-4 py-12 sm:py-20">
             <article className="mx-auto flex max-w-2xl flex-col gap-10">
                 <header className="flex flex-col gap-3">
-                    <Link href="/" className="self-start text-sm text-(--steel) hover:text-(--platinum)">&larr; Resume Resolve</Link>
+                    <Link href="/" className="self-start text-sm text-(--steel) hover:text-(--platinum)">&larr; Role Diary</Link>
                     <h1 className="text-3xl font-semibold tracking-tight text-(--platinum) sm:text-4xl">{title}</h1>
                     <p className="text-(--steel)">Last updated {lastUpdated}</p>
                     <p className="leading-relaxed text-(--chrome)">{intro}</p>

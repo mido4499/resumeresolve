@@ -3,8 +3,8 @@ import { GENERATIONS_PER_DAY } from "@/lib/rateLimit";
 import LegalPage, { ContactEmail, Section, legalLink as link, legalList as list, legalStrong as strong } from "@/app/components/LegalPage";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy · Resume Resolve",
-    description: "What Resume Resolve collects, why, who it's shared with, and how to export or delete it.",
+    title: "Privacy Policy · Role Diary",
+    description: "What Role Diary collects, why, who it's shared with, and how to export or delete it.",
 };
 
 const LAST_UPDATED = "October 21, 2026";
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
             title="Privacy Policy"
             lastUpdated={LAST_UPDATED}
             intro={<>
-                Resume Resolve lets you keep a diary of your professional experiences and turn it into tailored resumes.
+                Role Diary lets you keep a diary of your professional experiences and turn it into tailored resumes.
                 That means you trust us with personal information. This policy explains what we collect, why, who
                 else handles it, and how you stay in control of it.
             </>}
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             </Section>
 
             <Section title="Who else handles your information">
-                <p>We share your information only with the services that run Resume Resolve, and only what each one needs:</p>
+                <p>We share your information only with the services that run Role Diary, and only what each one needs:</p>
                 <ul className={list}>
                     <li>
                         <span className={strong}>Anthropic (Claude),</span> our AI provider. When you generate a resume, we send your diary,
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
             </Section>
 
             <Section title="Children">
-                <p>Resume Resolve isn&apos;t intended for children under 13, and we don&apos;t knowingly collect their information.</p>
+                <p>Role Diary isn&apos;t intended for children under 13, and we don&apos;t knowingly collect their information.</p>
             </Section>
 
             <Section title="Changes to this policy">

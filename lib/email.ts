@@ -1,4 +1,4 @@
-const APP_NAME = "Resume Resolve";
+const APP_NAME = "Role Diary";
 // onboarding@resend.dev only delivers to your own Resend account's address; set EMAIL_FROM to an
 // address on a domain verified in Resend to email other people
 const FROM = process.env.EMAIL_FROM ?? `${APP_NAME} <onboarding@resend.dev>`;

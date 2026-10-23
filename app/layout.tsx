@@ -10,7 +10,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Resume Resolve",
+  title: "Role Diary",
   description: "Keep a diary of your professional wins and turn it into a tailored resume.",
 };
 

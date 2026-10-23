@@ -18,7 +18,7 @@ export default function Landing({ startFace, notice, autoOpen }: { startFace: Fa
         <main className="relative flex min-h-screen flex-col items-center justify-center bg-(--metal) px-6 py-20 text-center">
 
             <h1 className="text-5xl font-semibold tracking-tight text-balance text-(--platinum) sm:text-7xl">
-                Resume Resolve
+                Role Diary
             </h1>
 
             <p className="mt-5 text-2xl text-balance text-(--steel) sm:text-3xl">
