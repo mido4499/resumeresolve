@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
 import OnboardingModal, { type Face, type OnboardingNotice } from "./onboarding/OnboardingModal";
@@ -17,11 +18,12 @@ export default function Landing({ startFace, notice, autoOpen }: { startFace: Fa
     return (
         <main className="relative flex min-h-screen flex-col items-center justify-center bg-(--metal) px-6 py-20 text-center">
 
-            <h1 className="text-5xl font-semibold tracking-tight text-balance text-(--platinum) sm:text-7xl">
-                Role Diary
+            {/* The logo is the page heading; its alt text gives the h1 its name */}
+            <h1>
+                <Image src="/logo.png" alt="Role Diary" width={1072} height={786} preload sizes="(min-width: 640px) 320px, 224px" className="h-auto w-56 sm:w-80" />
             </h1>
 
-            <p className="mt-5 text-2xl text-balance text-(--steel) sm:text-3xl">
+            <p className="mt-8 text-2xl text-balance text-(--steel) sm:text-3xl">
                 Make every experience count
             </p>
 

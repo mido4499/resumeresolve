@@ -12,6 +12,15 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "Role Diary",
   description: "Keep a diary of your professional wins and turn it into a tailored resume.",
+  // Browsers that support SVG icons use rolediary-favicon.svg; the rest fall back to favicon.ico.
+  // favicon.ico and apple-touch-icon.png are rendered from the SVG.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/rolediary-favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
